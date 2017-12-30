@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">QueComer</string>
+    <string name="instrucciones_buscar_receta">Ingrese los ingredientes y cantidades</string>
+</resources>
