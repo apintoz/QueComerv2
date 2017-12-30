@@ -10,14 +10,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:padding="5dp"
         android:textSize="18sp"
         android:text="Ayuda"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:padding="5dp"
         android:textSize="12sp"
         android:text="  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi eius aut eaque quia praesentium obcaecati possimus cupiditate
     consequuntur tempora? Id, delectus? Fugiat odit ipsam laudantium officiis quia, impedit mollitia libero."
