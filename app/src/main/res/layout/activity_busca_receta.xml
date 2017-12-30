@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:text="Ingredientes"
+                    android:textColor="@color/colorPanda"
                     android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
                     android:textSize="18dp" />
 
@@ -47,6 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="Cantidad"
+                    android:textColor="@color/colorPanda"
                     android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
                     android:textSize="18dp" />
 
@@ -55,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="Unidad"
+                    android:textColor="@color/colorPanda"
                     android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
                     android:textSize="18dp" />
             </LinearLayout>
