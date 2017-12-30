@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Presentacion extends AppCompatActivity {
@@ -30,5 +31,10 @@ public class Presentacion extends AppCompatActivity {
     public void iniciar_buscador(View view) {
         Intent intento = new Intent(this,BuscaReceta.class);
         startActivity(intento);
+    }
+
+    public void mostrarAyuda(View view) {
+            Intent auxiliar=new Intent(this,actividadAyuda.class);
+            startActivity(auxiliar);
     }
 }

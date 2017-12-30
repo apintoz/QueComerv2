@@ -19,11 +19,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BuscaReceta"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".actividad_lista_recetas"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".VisorReceta"></activity>
+        <activity
+            android:name=".BuscaReceta"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".actividad_lista_recetas"
+            android:screenOrientation="portrait" />
+        <activity android:name=".VisorReceta" />
+        <activity android:name=".actividadAyuda"></activity>
     </application>
 
 </manifest>
