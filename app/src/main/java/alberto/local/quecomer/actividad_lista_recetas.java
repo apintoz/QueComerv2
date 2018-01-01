@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -32,12 +33,15 @@ public class actividad_lista_recetas extends AppCompatActivity {
     {
         private Double puntaje;
         private int id_receta;
+        private int visibilidad_receta;
+
         private ArrayList<ingrediente> ingredientes;
 
         public item_lista(Double puntaje, int id_receta, ArrayList<ingrediente> ingredientes) {
             this.puntaje = puntaje;
             this.id_receta = id_receta;
             this.ingredientes = ingredientes;
+            this.visibilidad_receta = View.GONE;
         }
 
         public Double getPuntaje() {
@@ -48,15 +52,32 @@ public class actividad_lista_recetas extends AppCompatActivity {
             return id_receta;
         }
 
+        public int getVisibilidad_receta()
+        {
+            return visibilidad_receta;
+        }
+        public void setVisibilidad_receta(int para)
+        {
+            this.visibilidad_receta = para;
+        }
+
         public ArrayList<ingrediente> getIngredientes() {
             return ingredientes;
         }
     }
 
-    private class adaptador_recetas extends ArrayAdapter<item_lista> implements View.OnClickListener
-    {
+    private class adaptador_recetas extends ArrayAdapter<item_lista> implements  AdapterView.OnItemClickListener {
         private ArrayList<item_lista> datos_lista;
         Context micontexto;
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            item_lista item_listado  =(item_lista) parent.getItemAtPosition(position);
+            TextView  ni_idea= view.findViewById(R.id.lista_ingredientes_validos);
+            ni_idea.setVisibility(View.VISIBLE);
+            item_listado.setVisibilidad_receta(View.VISIBLE);
+            utilitario.pequeño_toast( parent.getContext(), "me tocaste y soy realidad");
+        }
 
         private  class tarjeta
         {
@@ -64,6 +85,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
             TextView vista_puntaje;
             TextView vista_ingredientes;
             ImageButton boton_receta;
+
         }
 
         public adaptador_recetas(@NonNull Context context, int resource, @NonNull List<item_lista> objects) {
@@ -72,14 +94,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
             this.micontexto = micontexto;
         }
 
-        @Override
-        public void onClick(View v) {
-            //tarjeta instancia_tarjeta = (tarjeta) v.getTag();
-             TextView vista  = (TextView) v.findViewById(R.id.lista_ingredientes_validos);
-            vista.setVisibility(View.INVISIBLE);
-            utilitario.pequeño_toast( getContext(), "me tocaste y soy realidad");
 
-        }
 
         @NonNull
         @Override
@@ -113,8 +128,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
             instancia_tarjeta.vista_puntaje.setText(utilitario.formato_2_decimales(chamare.getPuntaje()));
             instancia_tarjeta.boton_receta.setTag(Integer.toString(chamare.getId_receta()));
             instancia_tarjeta.vista_ingredientes.setText("pendiente de desarrollar =)");
-            instancia_tarjeta.vista_ingredientes.setVisibility(View.INVISIBLE);
-
+            instancia_tarjeta.vista_ingredientes.setVisibility(chamare.getVisibilidad_receta());
             return result;
         }
     }
@@ -142,6 +156,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
         adaptador_recetas mucha_variable = new adaptador_recetas(this, R.layout.cajita_listado_ingredientes, arreglo_datos);
         ListView listado_recetas_resultado = utilitario.$LV(findViewById(R.id.listado_puntajes));
         listado_recetas_resultado.setAdapter(mucha_variable);
+        listado_recetas_resultado.setOnItemClickListener(mucha_variable);
         utilitario.setListViewHeightBasedOnChildren(listado_recetas_resultado);
     }
     public void me_clickearon(View vista)
