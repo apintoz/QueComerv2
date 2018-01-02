@@ -72,7 +72,9 @@ public class BuscaReceta extends AppCompatActivity {
         adaptador_autocompletar funciona = new adaptador_autocompletar(madaptadorbdingredientes,this);
         texto_ingredientes.setAdapter(funciona);
         texto_ingredientes.setOnItemClickListener(funciona);
-        boton_selector_unidades.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,listado));
+        ArrayAdapter<String > adaptador_spinner = new  ArrayAdapter<String>(this, R.layout.spiner_item,listado);
+        adaptador_spinner.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        boton_selector_unidades.setAdapter(adaptador_spinner);
         layout.addView(cajita);
     }
 

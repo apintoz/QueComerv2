@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="fill_horizontal">
+        <shape android:shape="rectangle" >
+            <stroke android:color="@color/colorCocina" android:width="3dp"></stroke>
+            <solid android:color="@color/colorPanda">
+            </solid>
+            <corners android:radius="5dp">
+            </corners>
+        </shape>
+    </item>
+    <item android:gravity="right">
+        <bitmap android:src="@drawable/triangulo_blanquito"></bitmap>
+    </item>
+</layer-list>

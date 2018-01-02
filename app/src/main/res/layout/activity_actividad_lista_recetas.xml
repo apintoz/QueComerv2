@@ -6,25 +6,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="alberto.local.quecomer.actividad_lista_recetas">
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/contenedor_lista"
-            android:orientation="vertical"
+            android:text="Listado de Posibles Recetas"
+            android:textColor="@color/colorCafe"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/contenedor_lista"
+        android:orientation="vertical"
+        android:layout_weight="30"
         >
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/listado_puntajes">
             </ListView>
-        </LinearLayout>
-
-    </ScrollView>
-
-
-
+    </LinearLayout>
 </LinearLayout>

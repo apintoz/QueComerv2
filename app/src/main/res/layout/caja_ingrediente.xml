@@ -8,7 +8,7 @@
     <AutoCompleteTextView
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:padding="5dp"
         android:elevation="5dp"
         android:id="@+id/input_ingrediente"
@@ -35,14 +35,14 @@
         android:layout_weight="4">
     </EditText>
     <Spinner
-        android:layout_width="30dp"
+        android:layout_width="25dp"
         android:layout_height="40dp"
         android:padding="4dp"
         android:id="@+id/selector_unidades"
         android:textSize="10sp"
         android:verticalScrollbarPosition="right"
-        android:spinnerMode="dropdown"
+        android:background="@drawable/background_spinner_white"
+        android:elevation="4dp"
         android:layout_weight="4"
-        android:background="@android:drawable/btn_dropdown"
         android:layout_gravity="center_vertical"/>
 </LinearLayout>

@@ -76,7 +76,6 @@ public class actividad_lista_recetas extends AppCompatActivity {
             TextView  ni_idea= view.findViewById(R.id.lista_ingredientes_validos);
             ni_idea.setVisibility(View.VISIBLE);
             item_listado.setVisibilidad_receta(View.VISIBLE);
-            utilitario.pequeño_toast( parent.getContext(), "me tocaste y soy realidad");
         }
 
         private  class tarjeta
@@ -157,7 +156,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
         ListView listado_recetas_resultado = utilitario.$LV(findViewById(R.id.listado_puntajes));
         listado_recetas_resultado.setAdapter(mucha_variable);
         listado_recetas_resultado.setOnItemClickListener(mucha_variable);
-        utilitario.setListViewHeightBasedOnChildren(listado_recetas_resultado);
+        //utilitario.setListViewHeightBasedOnChildren(listado_recetas_resultado);
     }
     public void me_clickearon(View vista)
     {
