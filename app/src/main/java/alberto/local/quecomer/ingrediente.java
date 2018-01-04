@@ -10,12 +10,14 @@ public class ingrediente implements Parcelable {
     public String nombre_ingrediente;
     public int cantidad;
     public String unidad_medida;
+    public int id_ingrediente_en_bd;
 
 
     public ingrediente() {
         nombre_ingrediente = "";
         cantidad = -1;
         unidad_medida = "";
+        id_ingrediente_en_bd=0;
     }
 
     protected ingrediente(Parcel in) {

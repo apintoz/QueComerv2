@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -72,10 +73,20 @@ public class actividad_lista_recetas extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             item_lista item_listado  =(item_lista) parent.getItemAtPosition(position);
             TextView  ni_idea= view.findViewById(R.id.lista_ingredientes_validos);
-            ni_idea.setVisibility(View.VISIBLE);
-            item_listado.setVisibilidad_receta(View.VISIBLE);
+            if (ni_idea.getVisibility() == View.VISIBLE)
+            {
+                ni_idea.setVisibility(View.GONE);
+                item_listado.setVisibilidad_receta(View.GONE);
+            }
+            else
+            {
+                ni_idea.setVisibility(View.VISIBLE);
+                item_listado.setVisibilidad_receta(View.VISIBLE);
+            }
+
         }
 
         private  class tarjeta
@@ -123,10 +134,10 @@ public class actividad_lista_recetas extends AppCompatActivity {
                     Integer.toString(chamare.getId_receta()),"ID_RECETA");
             micursor_id_recetas.moveToFirst();
             String nombre_receta = micursor_id_recetas.getString(micursor_id_recetas.getColumnIndex("NOMBRE"));
-            instancia_tarjeta.vista_receta.setText(Integer.toString(chamare.getId_receta()) + "-" + nombre_receta);
+            instancia_tarjeta.vista_receta.setText(nombre_receta);
             instancia_tarjeta.vista_puntaje.setText(utilitario.formato_2_decimales(chamare.getPuntaje()));
             instancia_tarjeta.boton_receta.setTag(Integer.toString(chamare.getId_receta()));
-            instancia_tarjeta.vista_ingredientes.setText("pendiente de desarrollar =)");
+            pintar_ingredientes_por_receta(instancia_tarjeta.vista_ingredientes , mimotor, chamare.getId_receta() );
             instancia_tarjeta.vista_ingredientes.setVisibility(chamare.getVisibilidad_receta());
             return result;
         }
@@ -137,6 +148,10 @@ public class actividad_lista_recetas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_lista_recetas);
+        android.support.v7.widget.Toolbar barra =(android.support.v7.widget.Toolbar) getLayoutInflater().inflate(local.quick_stuff.R.layout.barra_herramientas,null);
+        LinearLayout layout_actividad = (LinearLayout) findViewById(R.id.cp_lista_receta);
+        layout_actividad.addView(barra,0);
+        setSupportActionBar(barra);
         ArrayList<ingrediente> p_lista_ingredientes =
                 ( ArrayList<ingrediente>) getIntent().getSerializableExtra("listado_ingredientes");
         TreeMap<Integer,Double> puntaje_recetas =
@@ -144,8 +159,9 @@ public class actividad_lista_recetas extends AppCompatActivity {
         gestorBD migestorBd = new gestorBD(this);
         mimotor = new motor_busqueda(migestorBd, p_lista_ingredientes,this,puntaje_recetas);
 
+
         ArrayList<item_lista> arreglo_datos = new ArrayList<>();
-        Iterator<Integer> iterador = puntaje_recetas.keySet().iterator();
+        Iterator<Integer> iterador =mimotor.IdByValues(mimotor.obtenerTabla_puntajes()).iterator();
         while (iterador.hasNext())
         {
             int llave_aux = iterador.next();
@@ -167,5 +183,23 @@ public class actividad_lista_recetas extends AppCompatActivity {
         intento.putExtra("calificaciones",mimotor.obtenerTabla_puntajes());
         intento.putExtra("id_receta",(String)vista.getTag());
         startActivity(intento);
+    }
+
+    public void pintar_ingredientes_por_receta ( TextView vista, motor_busqueda mimotor, int id_receta )
+    {
+     ArrayList<ingrediente> mi_listado_ingredientes = mimotor.obtener_listado_ingredientes();
+        Cursor micursor_id_ingredientes = mimotor.obtener_campo_con_llave("ID_INGREDIENTE", "RECETA_INGREDIENTES"
+                , Integer.toString(id_receta),"ID_RECETA");
+        String cadena = "";
+        if (micursor_id_ingredientes.moveToFirst())
+            do {
+                {
+//                  int id_ingrediente  = mi_listado_ingredientes.get(0).id_ingrediente_en_bd;
+                    int aux = micursor_id_ingredientes.getInt(micursor_id_ingredientes.getColumnIndex("ID_INGREDIENTE"));
+                    cadena= cadena +  " - " + Integer.toString(aux) + "\n";
+                }
+            }
+            while (micursor_id_ingredientes.moveToNext());
+        vista.setText(cadena);
     }
 }

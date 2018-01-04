@@ -2,65 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/contenedor_principal"
+    android:id="@+id/cp_buscar_receta"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="@string/instrucciones_buscar_receta"
+        android:text=""
         android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
         android:textSize="18dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="horizontal"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="Ingredientes"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorPanda"
+            android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Cantidad"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorPanda"
+            android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Unidad"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/colorPanda"
+            android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:textSize="18dp" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_weight="4">
-
         <LinearLayout
             android:id="@+id/contenedor_ingredientes"
             android:layout_width="match_parent"
             android:layout_height="100sp"
             android:layout_marginHorizontal="10dp"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:orientation="horizontal"
-                android:scrollbars="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="Ingredientes"
-                    android:textColor="@color/colorPanda"
-                    android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
-                    android:textSize="18dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Cantidad"
-                    android:textColor="@color/colorPanda"
-                    android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
-                    android:textSize="18dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Unidad"
-                    android:textColor="@color/colorPanda"
-                    android:textAppearance="@style/Theme.AppCompat.DayNight.NoActionBar"
-                    android:textSize="18dp" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

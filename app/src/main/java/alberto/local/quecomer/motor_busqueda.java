@@ -6,9 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import local.quick_stuff.utilitario;
 
@@ -66,7 +71,12 @@ public class motor_busqueda {
         ingrediente mingrediente = new ingrediente();
         mingrediente.unidad_medida=p_unidad_medida;
         mingrediente.cantidad=p_cantidad;
-        mingrediente.nombre_ingrediente= p_nombre;
+        Cursor mi_cursor = obtener_campo_con_llave("ID_INGREDIENTE"," INGREDIENTES ", p_nombre," NOMBRE ");
+        if (mi_cursor.moveToFirst())
+        {
+            mingrediente.id_ingrediente_en_bd = mi_cursor.getInt(mi_cursor.getColumnIndex("ID_INGREDIENTE"));
+            mingrediente.nombre_ingrediente= p_nombre;
+        }
         listado_ingredientes.add(mingrediente);
     }
 
@@ -151,6 +161,29 @@ public class motor_busqueda {
         Cursor micursor = bd.rawQuery("SELECT "  + nombre_campo + " FROM " + nombre_tabla + " WHERE " +
                 campo_comparacion  + " LIKE " + "'" + valor_buscado + "'",null );
         return micursor;
+    }
+
+
+    public  <K,V extends Comparable<? super V>>
+    ArrayList<Integer> IdByValues(Map<K,V> map)
+    {
+        SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
+                new Comparator<Map.Entry<K,V>>() {
+                    @Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
+                        int res = -(e1.getValue().compareTo(e2.getValue()));
+                        return res != 0 ? res : 1;
+                    }
+                }
+        );
+        sortedEntries.addAll(map.entrySet());
+        ArrayList<Integer> listado_id = new ArrayList<Integer>();
+        Iterator<Map.Entry<K,V>> iterador =sortedEntries.iterator();
+        while (iterador.hasNext())
+        {
+            int llave_aux = (Integer)iterador.next().getKey();
+            listado_id.add(llave_aux);
+        }
+        return listado_id;
     }
 
 }
