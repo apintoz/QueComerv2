@@ -152,6 +152,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
         LinearLayout layout_actividad = (LinearLayout) findViewById(R.id.cp_lista_receta);
         layout_actividad.addView(barra,0);
         setSupportActionBar(barra);
+        getSupportActionBar().setTitle("Listado de Recetas");
         ArrayList<ingrediente> p_lista_ingredientes =
                 ( ArrayList<ingrediente>) getIntent().getSerializableExtra("listado_ingredientes");
         TreeMap<Integer,Double> puntaje_recetas =
@@ -196,7 +197,10 @@ public class actividad_lista_recetas extends AppCompatActivity {
                 {
 //                  int id_ingrediente  = mi_listado_ingredientes.get(0).id_ingrediente_en_bd;
                     int aux = micursor_id_ingredientes.getInt(micursor_id_ingredientes.getColumnIndex("ID_INGREDIENTE"));
-                    cadena= cadena +  " - " + Integer.toString(aux) + "\n";
+                    Cursor curso_aux = mimotor.obtener_campo_con_llave("NOMBRE", "INGREDIENTES", Integer.toString(aux), "ID_INGREDIENTE");
+                    curso_aux.moveToFirst();
+                    String nombre_ingrediente = curso_aux.getString(curso_aux.getColumnIndex("NOMBRE"));
+                    cadena = cadena + "- " + nombre_ingrediente.toLowerCase() + "\n";
                 }
             }
             while (micursor_id_ingredientes.moveToNext());

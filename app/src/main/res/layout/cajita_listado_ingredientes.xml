@@ -33,12 +33,20 @@
         android:tint="@android:color/black"
         android:onClick="me_clickearon"
         android:id="@+id/boton_receta_damn"
-
         />
+
+
 </LinearLayout>
-<TextView
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="@color/colorPanda"
+        >
+    </View>
+    <TextView
     android:layout_marginTop="2dp"
     android:layout_width="match_parent"
+    android:textSize="12sp"
     android:id="@+id/lista_ingredientes_validos"
     android:layout_height="wrap_content" />
 </LinearLayout>

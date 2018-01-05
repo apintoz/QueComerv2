@@ -36,6 +36,7 @@ public class BuscaReceta extends AppCompatActivity {
         LinearLayout layout_actividad = (LinearLayout) findViewById(R.id.cp_buscar_receta);
         layout_actividad.addView(barra,0);
         setSupportActionBar(barra);
+        getSupportActionBar().setTitle("Buscador de Recetas");
         inicializar_listado();
         madaptadorbdingredientes = new adaptadorBDIngredientes(this);
         madaptadorbdingredientes.open();

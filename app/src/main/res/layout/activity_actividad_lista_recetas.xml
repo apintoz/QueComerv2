@@ -12,13 +12,14 @@
         android:layout_height="20dp"
         android:gravity="center_horizontal"
         android:layout_weight="1"
+        android:visibility="gone"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Listado de Posibles Recetas"
             android:textColor="@color/colorCafe"
-            android:textSize="22sp"/>
+            android:textSize="22sp" />
 
     </LinearLayout>
 
