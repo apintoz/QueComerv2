@@ -112,6 +112,7 @@ public class BuscaReceta extends AppCompatActivity {
         }
         motor.procesar_ingredientes();
         Intent intento = new Intent(this,actividad_lista_recetas.class);
+        intento.putExtra("categorias", motor.getCategorias_recetas());
         intento.putExtra("listado_ingredientes", motor.obtener_listado_ingredientes() );
         intento.putExtra("calificaciones",motor.obtenerTabla_puntajes());
         startActivity(intento);
