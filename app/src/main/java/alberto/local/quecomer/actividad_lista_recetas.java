@@ -1,15 +1,12 @@
 package alberto.local.quecomer;
 
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
+import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -37,7 +34,7 @@ import java.util.TreeMap;
 
 import local.quick_stuff.utilitario;
 
-public class actividad_lista_recetas extends AppCompatActivity {
+public class actividad_lista_recetas extends AppCompatActivity implements mi_dialogo_filtro.escuchador_dialogo {
 
     private motor_busqueda mimotor;
     public adaptador_recetas miadaptador;
@@ -90,7 +87,24 @@ public class actividad_lista_recetas extends AppCompatActivity {
 
 
     private class adaptador_recetas extends ArrayAdapter<item_lista> implements  AdapterView.OnItemClickListener, Filterable {
+        @Override
+        public int getCount() {
+            return datos_lista.size();
+        }
+
+        @Nullable
+        @Override
+        public item_lista getItem(int position) {
+            return datos_lista.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
         private ArrayList<item_lista> datos_lista;
+        private ArrayList<item_lista> datos_lista_filtrados;
         Context micontexto;
 
         public ArrayList<item_lista> getDatos_lista() {
@@ -120,6 +134,55 @@ public class actividad_lista_recetas extends AppCompatActivity {
 
         }
 
+
+        @Override
+        public Filter getFilter() {
+
+            Filter mifiltro = new Filter() {
+                @SuppressWarnings("unchecked")
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults resultados_filtrados = new FilterResults();
+                    ArrayList<item_lista> temp_lista = new ArrayList<>();
+                    boolean filtrar = false;
+
+                    if (constraint != null && datos_lista != null) {
+                        int longitud = datos_lista.size();
+                        int i = 0;
+                        String categorias = constraint.toString();
+                        filtrar = false;
+                        String[] array_categorias = categorias.split(",");
+                        while (i < longitud) {
+                            for (int j = 0; j < array_categorias.length; j++) {
+                                if (datos_lista.get(i).getCategorias_recetas().contains(array_categorias[j])) {
+                                    filtrar = true;
+                                }
+                            }
+                            if (!filtrar) {
+                                datos_lista.get(i).getCategorias_recetas();
+                                temp_lista.add(datos_lista.get(i));
+                            }
+                            i++;
+                        }
+                    }
+                    resultados_filtrados.values = temp_lista;
+                    resultados_filtrados.count = temp_lista.size();
+                    return resultados_filtrados;
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    datos_lista_filtrados = datos_lista;
+                    datos_lista.clear();
+                    datos_lista.addAll((ArrayList<item_lista>) results.values);
+                    notifyDataSetChanged();
+                }
+            };
+            return mifiltro;
+        }
+
+
         private  class tarjeta
         {
             TextView vista_receta;
@@ -132,7 +195,8 @@ public class actividad_lista_recetas extends AppCompatActivity {
 
         public adaptador_recetas(@NonNull Context context, int resource, @NonNull List<item_lista> objects) {
             super(context, resource, objects);
-            this.datos_lista = datos_lista;
+            this.datos_lista = (ArrayList<item_lista>)objects;
+            this.datos_lista_filtrados = this.datos_lista;
             this.micontexto = micontexto;
         }
 
@@ -150,11 +214,11 @@ public class actividad_lista_recetas extends AppCompatActivity {
                 instancia_tarjeta = new tarjeta();
                 LayoutInflater inflador = LayoutInflater.from(getContext());
                 convertView = inflador.inflate(R.layout.cajita_listado_ingredientes,parent,false);
-                instancia_tarjeta.vista_receta = (TextView)convertView.findViewById(R.id.nombre_receta);
-                instancia_tarjeta.vista_puntaje = (TextView)convertView.findViewById(R.id.puntaje);
-                instancia_tarjeta.vista_ingredientes = (TextView) convertView.findViewById(R.id.lista_ingredientes_validos);
-                instancia_tarjeta.boton_receta = (ImageButton) convertView.findViewById(R.id.boton_receta_damn);
-                instancia_tarjeta.vista_categorias =  (TextView) convertView.findViewById(R.id.texto_categorias);
+                instancia_tarjeta.vista_receta = convertView.findViewById(R.id.nombre_receta);
+                instancia_tarjeta.vista_puntaje = convertView.findViewById(R.id.puntaje);
+                instancia_tarjeta.vista_ingredientes = convertView.findViewById(R.id.lista_ingredientes_validos);
+                instancia_tarjeta.boton_receta = convertView.findViewById(R.id.boton_receta_damn);
+                instancia_tarjeta.vista_categorias = convertView.findViewById(R.id.texto_categorias);
                 result = convertView;
                 convertView.setTag(instancia_tarjeta);
             }
@@ -183,7 +247,7 @@ public class actividad_lista_recetas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_lista_recetas);
         android.support.v7.widget.Toolbar barra =(android.support.v7.widget.Toolbar) getLayoutInflater().inflate(local.quick_stuff.R.layout.barra_herramientas,null);
-        LinearLayout layout_actividad = (LinearLayout) findViewById(R.id.cp_lista_receta);
+        LinearLayout layout_actividad = findViewById(R.id.cp_lista_receta);
         layout_actividad.addView(barra,0);
         setSupportActionBar(barra);
         getSupportActionBar().setTitle("Listado de Recetas");
@@ -256,6 +320,10 @@ public class actividad_lista_recetas extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.filtro:
                 mi_dialogo_filtro dialogo = new mi_dialogo_filtro();
+                Bundle argumentos = new Bundle();
+                HashSet<String> categorias_dt2= obtener_categorias_de_tabla(arreglo_datos);
+                argumentos.putSerializable("listado_categorias_bundle", categorias_dt2 );
+                dialogo.setArguments(argumentos);
                 dialogo.show(getFragmentManager(),"howdy");
                 return true;
             default:
@@ -263,65 +331,31 @@ public class actividad_lista_recetas extends AppCompatActivity {
         }
     }
 
-    public class mi_dialogo_filtro extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            // Get the layout inflater
-            LayoutInflater inflater = getActivity().getLayoutInflater();
-
-
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            LinearLayout contenedor_dialogo = (LinearLayout) inflater.inflate(R.layout.dialogo_filtro,null);
-            LinearLayout contenedor_categorias_filtro = (LinearLayout) inflater.inflate(R.layout.filter_part,null);
-
-            LinearLayout.LayoutParams  parametros_layout= new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            parametros_layout.setMargins(20,20,10,20);
-            contenedor_categorias_filtro.setLayoutParams(parametros_layout);
-
-            ArrayList <item_lista>  listado_items = arreglo_datos;
-            HashSet<String>  set_categorias = new HashSet<>();
-            for (item_lista aux1 : listado_items)
+    public HashSet<String> obtener_categorias_de_tabla(ArrayList<item_lista> parametro)
+    {
+        HashSet<String>  set_categorias = new HashSet<>();
+        for (item_lista aux1 : parametro)
+        {
+            String[] aux2  = aux1.getCategorias_recetas().split(",");
+            for (String aux3 : aux2)
             {
-                String[] aux2  = aux1.getCategorias_recetas().split(",");
-                for (String aux3 : aux2)
-                {
-                    set_categorias.add(aux3);
-                }
+                set_categorias.add(aux3);
             }
-            Iterator mi_iterador = set_categorias.iterator();
-            while (mi_iterador.hasNext())
-            {
-                CheckBox mibox = new CheckBox(getActivity());
-                mibox.setText((String)mi_iterador.next());
-                mibox.setChecked(true);
-                mibox.setLayoutParams(parametros_layout);
-                contenedor_categorias_filtro.addView(mibox);
-
-            }
-
-            contenedor_dialogo.addView(contenedor_categorias_filtro);
-            builder.setView(contenedor_dialogo)
-                    // Add action buttons
-                    .setPositiveButton("Filtrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            // sign in the user ...
-                        }
-                    })
-                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            mi_dialogo_filtro.this.getDialog().cancel();
-                        }
-                    });
-            return builder.create();
-
         }
-
+        return set_categorias;
     }
 
+    @Override
+    public void en_positivo(DialogFragment dialogo) {
+        mi_dialogo_filtro  m_dialogo = (mi_dialogo_filtro) dialogo;
+        utilitario.pequeño_toast(this, m_dialogo.cadena);
+        ListView lista = (ListView)findViewById(R.id.listado_puntajes);
+        adaptador_recetas mnadaptador = (adaptador_recetas) lista.getAdapter();
+        mnadaptador.getFilter().filter(m_dialogo.cadena);
+    }
 
+    @Override
+    public void en_negativo(DialogFragment dialogo) {
+
+    }
 }

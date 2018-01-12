@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/QueComer.iml" filepath="$PROJECT_DIR$/QueComer.iml" />
-      <module fileurl="file://C:\Users\-\AndroidStudioProjects\QueComer\QueComerv2.iml" filepath="C:\Users\-\AndroidStudioProjects\QueComer\QueComerv2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/quick_stuff/quick_stuff.iml" filepath="$PROJECT_DIR$/quick_stuff/quick_stuff.iml" />
     </modules>

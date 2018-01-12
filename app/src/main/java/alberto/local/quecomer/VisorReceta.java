@@ -20,8 +20,8 @@ public class VisorReceta extends AppCompatActivity {
         migestor = new gestorBD(this);
         String receta = getIntent().getStringExtra("id_receta");
         String cadena_consulta = TEXTO_HTML + ", " + TEXTO_SIMPLE;
-        TextView caja_detalles_receta = (TextView) findViewById(R.id.texto_receta);
-        TextView caja_titulo_receta_= (TextView) findViewById(R.id.titulo_receta);
+        TextView caja_detalles_receta = findViewById(R.id.texto_receta);
+        TextView caja_titulo_receta_= findViewById(R.id.titulo_receta);
         Cursor cursor_pasos_receta = migestor.obtener_campo_con_llave2(cadena_consulta + ", NOMBRE ","RECETAS",receta,"ID_RECETA");
         cursor_pasos_receta.moveToFirst();
         String pasos_receta = cursor_pasos_receta.getString(cursor_pasos_receta.getColumnIndex(TEXTO_HTML));

@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="30dp"
-    android:layout_marginTop="20dp">
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="10dp">
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="16sp"
-    android:text="Categoria"
+    android:textSize="15sp"
+    android:text= "Escoja las Categorias que desee filtrar"
     android:textColor="@color/colorPanda"
     android:id="@+id/Categoria_filtro"
     android:textStyle="bold"/>

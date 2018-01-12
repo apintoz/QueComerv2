@@ -10,19 +10,12 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -78,6 +71,7 @@ public class motor_busqueda {
         this.categorias_recetas = pcategorias;
 
     }
+
     public motor_busqueda(gestorBD gestor_base, ArrayList<ingrediente> listado_ingredientes, Context contexto, TreeMap<Integer, Double> tabla_puntajes) {
         this.gestor_base = gestor_base;
         this.listado_ingredientes = listado_ingredientes;
@@ -117,7 +111,7 @@ public class motor_busqueda {
             do {
                 int temp_id_int = mi_cursor.getInt(mi_cursor.getColumnIndex("ID_RECETA"));
                 Double temp_double = mi_cursor.getDouble(mi_cursor.getColumnIndex("CANTIDAD"));
-                String aux_categorias =  mi_cursor.getString(mi_cursor.getColumnIndex("CATEGORIAS")).replace(" ","");
+                String aux_categorias = mi_cursor.getString(mi_cursor.getColumnIndex("CATEGORIAS")).replace(" ", "");
 
                 temp_double = p_ingrediente.cantidad / temp_double;
                 if (tabla_puntajes.containsKey(temp_id_int)) {
@@ -126,7 +120,7 @@ public class motor_busqueda {
                     tabla_puntajes.put(temp_id_int, temp_double + item_en_llave);
                 } else {
                     tabla_puntajes.put(temp_id_int, temp_double);
-                    categorias_recetas.put(temp_id_int,aux_categorias);
+                    categorias_recetas.put(temp_id_int, aux_categorias);
                 }
             }
             while (mi_cursor.moveToNext());
@@ -204,37 +198,5 @@ public class motor_busqueda {
     }
 
 
-    public static class mi_dialogo_filtro extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            // Get the layout inflater
-            LayoutInflater inflater = getActivity().getLayoutInflater();
-
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            LinearLayout contenedor_dialogo = (LinearLayout) inflater.inflate(R.layout.dialogo_filtro,null);
-            LinearLayout contenedor_categorias_filtro = (LinearLayout) inflater.inflate(R.layout.filter_part,null);
-
-            contenedor_dialogo.addView(contenedor_categorias_filtro);
-            builder.setView(contenedor_dialogo)
-                    // Add action buttons
-                    .setPositiveButton("Filtrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            // sign in the user ...
-                        }
-                    })
-                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            mi_dialogo_filtro.this.getDialog().cancel();
-                        }
-                    });
-            return builder.create();
-
-        }
-
-    }
 
 }

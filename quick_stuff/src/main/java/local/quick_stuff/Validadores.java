@@ -46,11 +46,6 @@ public class Validadores {
                     flag=flag*1;
             }
         }
-        if (flag!=0)
-        {
-            return true;
-        }
-        else
-            return false;
+        return flag != 0;
     }
 }

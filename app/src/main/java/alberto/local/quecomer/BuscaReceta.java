@@ -33,14 +33,14 @@ public class BuscaReceta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busca_receta);
         android.support.v7.widget.Toolbar barra =(android.support.v7.widget.Toolbar) getLayoutInflater().inflate(local.quick_stuff.R.layout.barra_herramientas,null);
-        LinearLayout layout_actividad = (LinearLayout) findViewById(R.id.cp_buscar_receta);
+        LinearLayout layout_actividad = findViewById(R.id.cp_buscar_receta);
         layout_actividad.addView(barra,0);
         setSupportActionBar(barra);
         getSupportActionBar().setTitle("Buscador de Recetas");
         inicializar_listado();
         madaptadorbdingredientes = new adaptadorBDIngredientes(this);
         madaptadorbdingredientes.open();
-        LinearLayout contenedor_ingredientes= (LinearLayout) findViewById(R.id.contenedor_ingredientes);
+        LinearLayout contenedor_ingredientes= findViewById(R.id.contenedor_ingredientes);
         for (int i= 0;i<3;i++)
         {
             agregar_ingrediente(contenedor_ingredientes);
@@ -51,7 +51,7 @@ public class BuscaReceta extends AppCompatActivity {
     public void nuevo_ingrediente(View view) {
 
 
-        LinearLayout contenedor_ingredientes= (LinearLayout) findViewById(R.id.contenedor_ingredientes);
+        LinearLayout contenedor_ingredientes= findViewById(R.id.contenedor_ingredientes);
         int cantidad_ingredientes = contenedor_ingredientes.getChildCount();
         if (cantidad_ingredientes>MAX_INGREDIENTES_BUSQUEDA)
         {
@@ -68,8 +68,8 @@ public class BuscaReceta extends AppCompatActivity {
     public void agregar_ingrediente( LinearLayout layout)
     {
         LinearLayout cajita = (LinearLayout) this.getLayoutInflater().inflate(R.layout.caja_ingrediente,null);
-        Spinner boton_selector_unidades = (Spinner) cajita.findViewById(R.id.selector_unidades);
-        AutoCompleteTextView texto_ingredientes = (AutoCompleteTextView) cajita.findViewById(R.id.input_ingrediente);
+        Spinner boton_selector_unidades = cajita.findViewById(R.id.selector_unidades);
+        AutoCompleteTextView texto_ingredientes = cajita.findViewById(R.id.input_ingrediente);
         adaptador_autocompletar funciona = new adaptador_autocompletar(madaptadorbdingredientes,this);
         texto_ingredientes.setAdapter(funciona);
         texto_ingredientes.setOnItemClickListener(funciona);
@@ -99,12 +99,12 @@ public class BuscaReceta extends AppCompatActivity {
         gestorBD mi_gestor = new gestorBD(view.getContext());
         motor_busqueda motor = new motor_busqueda(mi_gestor,view.getContext());
 
-        LinearLayout contenedor_ingredientes = (LinearLayout) findViewById(R.id.contenedor_ingredientes);
+        LinearLayout contenedor_ingredientes = findViewById(R.id.contenedor_ingredientes);
         for (int i =0; i<contenedor_ingredientes.getChildCount();i++)
         {
             LinearLayout cajita = (LinearLayout) contenedor_ingredientes.getChildAt(i);
-            EditText caja_nombre_ingrediente = (EditText) cajita.findViewById(R.id.input_ingrediente);
-            EditText caja_cantidad_ingrediente = (EditText) cajita.findViewById(R.id.cantidades_ingrediente);
+            EditText caja_nombre_ingrediente = cajita.findViewById(R.id.input_ingrediente);
+            EditText caja_cantidad_ingrediente = cajita.findViewById(R.id.cantidades_ingrediente);
             String ingrediente = caja_nombre_ingrediente.getText().toString();
             int cantidad_ingrediente = Integer.parseInt(caja_cantidad_ingrediente.getText().toString());
             motor.agregar_ingrediente(ingrediente,cantidad_ingrediente,"GR" );
