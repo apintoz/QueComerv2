@@ -2,9 +2,11 @@ package alberto.local.quecomer;
 
 
 import android.app.DialogFragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +41,7 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
     private motor_busqueda mimotor;
     public adaptador_recetas miadaptador;
     public ArrayList<item_lista> arreglo_datos;
-
+    private HashSet<String> categorias_dt2;
 
     private class item_lista
     {
@@ -48,6 +50,7 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
         private int visibilidad_receta;
         private String categorias_recetas;
         private int visibilidad_barrita;
+
         private ArrayList<ingrediente> ingredientes;
 
         public item_lista(Double puntaje, int id_receta, ArrayList<ingrediente> ingredientes, String categorias) {
@@ -89,13 +92,13 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
     private class adaptador_recetas extends ArrayAdapter<item_lista> implements  AdapterView.OnItemClickListener, Filterable {
         @Override
         public int getCount() {
-            return datos_lista.size();
+            return datos_lista_filtrados.size();
         }
 
         @Nullable
         @Override
         public item_lista getItem(int position) {
-            return datos_lista.get(position);
+            return datos_lista_filtrados.get(position);
         }
 
         @Override
@@ -146,13 +149,14 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
                     ArrayList<item_lista> temp_lista = new ArrayList<>();
                     boolean filtrar = false;
 
-                    if (constraint != null && datos_lista != null) {
+                    if (constraint != null && !constraint.equals("") && datos_lista != null) {
                         int longitud = datos_lista.size();
                         int i = 0;
                         String categorias = constraint.toString();
                         filtrar = false;
                         String[] array_categorias = categorias.split(",");
                         while (i < longitud) {
+                            filtrar= false;
                             for (int j = 0; j < array_categorias.length; j++) {
                                 if (datos_lista.get(i).getCategorias_recetas().contains(array_categorias[j])) {
                                     filtrar = true;
@@ -165,6 +169,10 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
                             i++;
                         }
                     }
+                    else
+                    {
+                        temp_lista.addAll(datos_lista);
+                    }
                     resultados_filtrados.values = temp_lista;
                     resultados_filtrados.count = temp_lista.size();
                     return resultados_filtrados;
@@ -173,9 +181,8 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
                 @Override
                 @SuppressWarnings("unchecked")
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-                    datos_lista_filtrados = datos_lista;
-                    datos_lista.clear();
-                    datos_lista.addAll((ArrayList<item_lista>) results.values);
+                    datos_lista_filtrados.clear();
+                    datos_lista_filtrados.addAll((ArrayList<item_lista>) results.values);
                     notifyDataSetChanged();
                 }
             };
@@ -196,7 +203,8 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
         public adaptador_recetas(@NonNull Context context, int resource, @NonNull List<item_lista> objects) {
             super(context, resource, objects);
             this.datos_lista = (ArrayList<item_lista>)objects;
-            this.datos_lista_filtrados = this.datos_lista;
+            this.datos_lista_filtrados = new ArrayList<>();
+            datos_lista_filtrados.addAll(datos_lista);
             this.micontexto = micontexto;
         }
 
@@ -251,6 +259,7 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
         layout_actividad.addView(barra,0);
         setSupportActionBar(barra);
         getSupportActionBar().setTitle("Listado de Recetas");
+        getSupportActionBar().setIcon(R.mipmap.v2);
         ArrayList<ingrediente> p_lista_ingredientes =
                 ( ArrayList<ingrediente>) getIntent().getSerializableExtra("listado_ingredientes");
         TreeMap<Integer,Double> puntaje_recetas =
@@ -258,9 +267,7 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
         TreeMap<Integer,String> categorias_recet =
                 new TreeMap<>((Map<Integer, String>)getIntent().getSerializableExtra("categorias"));
         gestorBD migestorBd = new gestorBD(this);
-        mimotor = new motor_busqueda(migestorBd, p_lista_ingredientes,this,puntaje_recetas);
-
-
+                mimotor = new motor_busqueda(migestorBd, p_lista_ingredientes,this,puntaje_recetas);
         arreglo_datos = new ArrayList<>();
         Iterator<Integer> iterador =mimotor.IdByValues(mimotor.obtenerTabla_puntajes()).iterator();
         while (iterador.hasNext())
@@ -270,10 +277,10 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
             arreglo_datos.add(item_lista_aux);
         }
         miadaptador = new adaptador_recetas(this, R.layout.cajita_listado_ingredientes, arreglo_datos);
+        categorias_dt2 = obtener_categorias_de_tabla(arreglo_datos);
         ListView listado_recetas_resultado = utilitario.$LV(findViewById(R.id.listado_puntajes));
         listado_recetas_resultado.setAdapter(miadaptador);
         listado_recetas_resultado.setOnItemClickListener(miadaptador);
-        //utilitario.setListViewHeightBasedOnChildren(listado_recetas_resultado);
     }
     public void me_clickearon(View vista)
     {
@@ -321,12 +328,25 @@ public class actividad_lista_recetas extends AppCompatActivity implements mi_dia
             case R.id.filtro:
                 mi_dialogo_filtro dialogo = new mi_dialogo_filtro();
                 Bundle argumentos = new Bundle();
-                HashSet<String> categorias_dt2= obtener_categorias_de_tabla(arreglo_datos);
                 argumentos.putSerializable("listado_categorias_bundle", categorias_dt2 );
                 dialogo.setArguments(argumentos);
                 dialogo.show(getFragmentManager(),"howdy");
                 return true;
-            default:
+            case R.id.envio_mail:
+                String mailto = "mailto:apintoz@uni.pe" +
+                        "?cc=" + "elpadredelcordero@gmail.com" +
+                        "&subject=" + "Sugerencia app " + this.toString() +
+                        "&body=" + Uri.encode("");
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO: Handle case where no email app is available
+                }
+                return true;
+                default:
                 return super.onOptionsItemSelected(item);
         }
     }

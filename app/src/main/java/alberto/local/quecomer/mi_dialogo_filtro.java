@@ -58,8 +58,9 @@ public class mi_dialogo_filtro extends DialogFragment {
         final LinearLayout contenedor_categorias_filtro = (LinearLayout) inflater.inflate(R.layout.filter_part, null);
 
         LinearLayout.LayoutParams parametros_layout = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametros_layout.setMargins(20, 20, 10, 20);
+        contenedor_categorias_filtro.setOrientation(LinearLayout.VERTICAL);
         contenedor_categorias_filtro.setLayoutParams(parametros_layout);
 
         Iterator<String> mi_iterador = damn.iterator();

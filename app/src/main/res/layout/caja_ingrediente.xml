@@ -40,6 +40,7 @@
         android:padding="4dp"
         android:id="@+id/selector_unidades"
         android:textSize="10sp"
+        android:spinnerMode="dialog"
         android:verticalScrollbarPosition="right"
         android:background="@drawable/background_spinner_white"
         android:elevation="4dp"

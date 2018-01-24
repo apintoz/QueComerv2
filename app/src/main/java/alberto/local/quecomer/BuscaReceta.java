@@ -1,11 +1,16 @@
 package alberto.local.quecomer;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import local.quick_stuff.*;
 
@@ -37,11 +42,12 @@ public class BuscaReceta extends AppCompatActivity {
         layout_actividad.addView(barra,0);
         setSupportActionBar(barra);
         getSupportActionBar().setTitle("Buscador de Recetas");
+        getSupportActionBar().setIcon(R.mipmap.v2);
         inicializar_listado();
         madaptadorbdingredientes = new adaptadorBDIngredientes(this);
         madaptadorbdingredientes.open();
         LinearLayout contenedor_ingredientes= findViewById(R.id.contenedor_ingredientes);
-        for (int i= 0;i<3;i++)
+        for (int i= 0;i<6;i++)
         {
             agregar_ingrediente(contenedor_ingredientes);
         }
@@ -73,9 +79,8 @@ public class BuscaReceta extends AppCompatActivity {
         adaptador_autocompletar funciona = new adaptador_autocompletar(madaptadorbdingredientes,this);
         texto_ingredientes.setAdapter(funciona);
         texto_ingredientes.setOnItemClickListener(funciona);
-        ArrayAdapter<String > adaptador_spinner = new  ArrayAdapter<String>(this, R.layout.spiner_item,listado);
-        adaptador_spinner.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        boton_selector_unidades.setAdapter(adaptador_spinner);
+        Adaptador_spinner ad_spinner = new Adaptador_spinner(this,R.layout.spiner_item, R.id.valor);
+        boton_selector_unidades.setAdapter(ad_spinner);
         layout.addView(cajita);
     }
 
@@ -119,5 +124,33 @@ public class BuscaReceta extends AppCompatActivity {
 
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_standar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.envio_mail:
+                String mailto = "mailto:apintoz@uni.pe" +
+                        "?cc=" + "elpadredelcordero@gmail.com" +
+                        "&subject=" + "Sugerencia app " + this.toString() +
+                        "&body=" + Uri.encode("");
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO: Handle case where no email app is available
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

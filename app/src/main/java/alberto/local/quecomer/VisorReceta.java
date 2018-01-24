@@ -1,9 +1,13 @@
 package alberto.local.quecomer;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import local.quick_stuff.utilitario;
@@ -37,4 +41,29 @@ public class VisorReceta extends AppCompatActivity {
         String titulo_receta = cursor_pasos_receta.getString(cursor_pasos_receta.getColumnIndex("NOMBRE"));
         caja_titulo_receta_.setText(titulo_receta);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.envio_mail:
+                String mailto = "mailto:apintoz@uni.pe" +
+                        "?cc=" + "elpadredelcordero@gmail.com" +
+                        "&subject=" + "Sugerencia app " + this.toString() +
+                        "&body=" + Uri.encode("");
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO: Handle case where no email app is available
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 }

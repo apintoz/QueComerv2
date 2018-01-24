@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+
+<TextView
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
     android:gravity="left"
-    android:textColor="@color/colorCocina"
+    android:id="@+id/descrip"
+    android:layout_weight="5"
+    android:textColor="@color/colorCafe"
     android:padding="5dp"
     >
 </TextView>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:id="@+id/valor"
+        android:layout_weight="1"
+        android:textColor="@color/colorCafe"
+        android:padding="5dp"
+        >
+    </TextView>
+</LinearLayout>

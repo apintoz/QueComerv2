@@ -10,6 +10,7 @@
     android:textSize="15sp"
     android:text= "Escoja las Categorias que desee filtrar"
     android:textColor="@color/colorPanda"
+    android:layout_weight="1"
     android:id="@+id/Categoria_filtro"
     android:textStyle="bold"/>
 

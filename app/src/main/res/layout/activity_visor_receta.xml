@@ -7,14 +7,20 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="10dp"
     tools:context="alberto.local.quecomer.VisorReceta">
-    <TextView
-        android:layout_marginTop="20dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/titulo_receta"/>
-    <ScrollView
+    </LinearLayout>
+
+        <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="8">
@@ -23,4 +29,28 @@
         android:layout_height="match_parent"
         android:id="@+id/texto_receta"/>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorCafe"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Que te pareció esta receta?"/>
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.2"
+        android:numStars="5"
+        android:scaleX="1"
+        android:isIndicator="false"
+        android:scaleY="1"
+        android:stepSize="1"
+        />
+    </LinearLayout>
 </LinearLayout>
